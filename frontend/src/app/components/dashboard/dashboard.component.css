@@ -1,0 +1,29 @@
+.dashboard-header {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+}
+
+.statistics-section {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  border-radius: 12px;
+  color: white;
+}
+
+.status-distribution {
+  background: linear-gradient(135deg, #c471f5, #fa71cd);
+  border-radius: 12px;
+  color: white;
+}
+
+.priority-distribution {
+  background: linear-gradient(135deg, #f77062, #fe5196);
+  border-radius: 12px;
+  color: white;
+}
+
+.quick-actions {
+  background: linear-gradient(135deg, #8e2de2, #4a00e0);
+  border-radius: 12px;
+  color: white;
+}
