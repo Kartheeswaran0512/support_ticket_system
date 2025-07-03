@@ -198,20 +198,39 @@ export class RegisterComponent {
     this.isLoading = true;
     this.error = '';
     this.success = '';
-    
-    this.auth.register({ 
-      name: this.name, 
-      email: this.email, 
-      password: this.password, 
-      role: this.role 
-    }).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this.success = 'Account created successfully! Redirecting to login...';
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 2000);
-      },
+    // old code(3/7/26)
+    // this.auth.register({ 
+    //   name: this.name, 
+    //   email: this.email, 
+    //   password: this.password, 
+    //   role: this.role 
+    // }).subscribe({
+    //   next: () => {
+    //     this.isLoading = false;
+    //     this.success = 'Account created successfully! Redirecting to login...';
+    //     setTimeout(() => {
+    //       this.router.navigate(['/login']);
+    //     }, 2000);
+    //   },
+      const userData = {
+    name: this.name,
+    email: this.email,
+    password: this.password,
+    role: this.role || 'user' // fallback role
+  };
+
+  console.log('📤 Registering user:', userData); // Helpful for debugging
+
+  this.auth.register(userData).subscribe({
+    next: (res) => {
+      console.log('✅ Registration success:', res);
+      this.isLoading = false;
+      this.success = '🎉 Account created! Redirecting...';
+
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 2000);
+    },
       error: err => {
         this.isLoading = false;
         this.error = err.error.message || 'Registration failed. Please try again.';
