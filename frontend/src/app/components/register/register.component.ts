@@ -252,9 +252,11 @@ export class RegisterComponent {
   complete: () => {
     console.log('✅ Register observable completed');
   }
-})
-  
-  togglePassword() {
-    this.showPassword = !this.showPassword;
+});
   }
-}
+  
+  //yesterday
+//   togglePassword() {
+//     this.showPassword = !this.showPassword;
+//   }
+// }
