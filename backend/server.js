@@ -8,7 +8,12 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+  origin: 'https://ticketsystem-klq3.onrender.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true // only if you're using tokens/cookies
+}));
 // const cors = require('cors');
 
 // app.use(cors({
