@@ -98,8 +98,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
                     (click)="togglePassword()"
                     class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   > -->
-                    <mat-icon class="text-xl">{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-                  </button>
+                    <!-- <mat-icon class="text-xl">{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button> -->
                 </div>
                 <div class="text-xs text-gray-500 mt-1">
                   Password should be at least 6 characters long
