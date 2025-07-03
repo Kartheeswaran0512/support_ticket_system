@@ -85,7 +85,7 @@ app.post('/api/register', async (req, res) => {
 // User Login
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
-  const [[user]] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+  const [user] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return res.status(401).json({ message: 'Invalid credentials' });
   }
