@@ -222,7 +222,7 @@ export class RegisterComponent {
   console.log('📤 Registering user:', userData); // Helpful for debugging
 
   this.auth.register(userData).subscribe({
-    next: (res) => {
+    next: (res : any) => {
       console.log('✅ Registration success:', res);
       this.isLoading = false;
       this.success = '🎉 Account created! Redirecting...';
