@@ -166,6 +166,26 @@ app.get('/api/tickets/latest', authenticate, authorize('admin'), async (req, res
     res.status(500).json({ error: err.message });
   }
 });
+app.get('/api/tickets/top-creator', authenticate, authorize('admin'), async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT users.name, COUNT(tickets.id) as ticket_count
+      FROM users
+      JOIN tickets ON users.id = tickets.created_by
+      GROUP BY users.id
+      ORDER BY ticket_count DESC
+      LIMIT 1
+    `);
+
+    if (rows.length === 0) {
+      return res.json(null);
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Get Single Ticket by ID
 app.get('/api/tickets/:id', authenticate, async (req, res) => {
