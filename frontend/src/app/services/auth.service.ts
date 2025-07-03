@@ -6,7 +6,7 @@ import { Observable,Observer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private BASE_URL = 'https://localhost:4000/api';
+  private BASE_URL = 'http://localhost:4000/api';
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: HttpClient, private router: Router) {}

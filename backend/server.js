@@ -8,14 +8,14 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-// app.use(cors());
+app.use(cors());
 // const cors = require('cors');
 
-app.use(cors({
-  origin: 'https://ticketsystem-klq3.onrender.com', // ✅ your frontend domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true // if you're using cookies/auth tokens
-}));
+// app.use(cors({
+//   origin: 'https://ticketsystem-klq3.onrender.com', // ✅ your frontend domain
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true // if you're using cookies/auth tokens
+// }));
 
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
