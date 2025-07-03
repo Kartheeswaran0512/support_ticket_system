@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
-  private BASE_URL = 'https://support-ticket-system-q4y8.onrender.com/api';
+  private BASE_URL = 'https://localhost:4000/api';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
   //old code
@@ -29,6 +29,7 @@ export class TicketService {
 
 // old code
   getTickets() {
+    
     return this.http.get<any[]>(`${this.BASE_URL}/tickets`, this.getHeaders());
   }
   getTicketsCount() {

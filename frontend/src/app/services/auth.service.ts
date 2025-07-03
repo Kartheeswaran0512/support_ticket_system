@@ -6,7 +6,7 @@ import { Observable,Observer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private BASE_URL = 'https://support-ticket-system-q4y8.onrender.com/api';
+  private BASE_URL = 'https://localhost:4000/api';
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -31,6 +31,7 @@ export class AuthService {
   }
 
   login(credentials: any) {
+    console.log(this.BASE_URL);
     return this.http.post(`${this.BASE_URL}/login`, credentials);
   }
 
