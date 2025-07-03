@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
-  private BASE_URL = 'http://localhost:4000/api';
+  private BASE_URL = 'https://support-ticket-system-q4y8.onrender.com/api';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
   //old code
