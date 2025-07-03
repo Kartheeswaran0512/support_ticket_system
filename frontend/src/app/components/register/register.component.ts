@@ -220,23 +220,39 @@ export class RegisterComponent {
   };
 
   console.log('📤 Registering user:', userData); // Helpful for debugging
+ //old code
+  // this.auth.register(userData).subscribe({
+  //   next: (res : any) => {
+  //     console.log('✅ Registration success:', res);
+  //     this.isLoading = false;
+  //     this.success = '🎉 Account created! Redirecting...';
 
+  //     setTimeout(() => {
+  //       this.router.navigate(['/login']);
+  //     }, 2000);
+  //   },
+  //     error: err => {
+  //       this.isLoading = false;
+  //       this.error = err.error.message || 'Registration failed. Please try again.';
+  //     }
+  //   });
+  // }
   this.auth.register(userData).subscribe({
-    next: (res : any) => {
-      console.log('✅ Registration success:', res);
-      this.isLoading = false;
-      this.success = '🎉 Account created! Redirecting...';
-
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-      }, 2000);
-    },
-      error: err => {
-        this.isLoading = false;
-        this.error = err.error.message || 'Registration failed. Please try again.';
-      }
-    });
+  next: (res) => {
+    console.log('✅ Registration success:', res);
+    this.isLoading = false;
+    this.success = '🎉 Account created! Redirecting...';
+    setTimeout(() => this.router.navigate(['/login']), 2000);
+  },
+  error: (err) => {
+    console.error('❌ Registration failed:', err);
+    this.isLoading = false;
+    this.error = err?.error?.message || 'Registration failed. Please try again.';
+  },
+  complete: () => {
+    console.log('✅ Register observable completed');
   }
+})
   
   togglePassword() {
     this.showPassword = !this.showPassword;
