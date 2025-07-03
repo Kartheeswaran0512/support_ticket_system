@@ -8,14 +8,8 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-app.use(cors({
-  origin: 'http://localhost:4200',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors());
 app.use(express.json());
-app.options('*', cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Multer config for attachments
@@ -37,24 +31,6 @@ const pool = mysql.createPool({
 });
 
 // JWT Auth Middleware
-//old code
-// function authenticate(req, res, next) {
-//   const token = req.headers['authorization']?.split(' ')[1];
-//   if (!token) return res.sendStatus(401);
-//   jwt.verify(token, 'secretkey', (err, user) => {
-//     if (err) return res.sendStatus(403);
-//     req.user = user;
-//     next();
-//   });
-// }
-
-// // Role check middleware
-// function authorize(role) {
-//   return (req, res, next) => {
-//     if (req.user.role !== role) return res.sendStatus(403);
-//     next();
-//   };
-// }
 function authenticate(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -79,6 +55,7 @@ function authenticate(req, res, next) {
     next();
   });
 }
+
 function authorize(...allowedRoles) {
   return (req, res, next) => {
     const userRole = req.user?.role;
@@ -90,8 +67,6 @@ function authorize(...allowedRoles) {
     next();
   };
 }
-
-
 
 // User Registration
 app.post('/api/register', async (req, res) => {
@@ -121,7 +96,6 @@ app.post('/api/login', async (req, res) => {
 // Create Ticket (customer)
 app.post('/api/tickets', authenticate, async (req, res) => {
   const { subject, category, priority, description } = req.body;
-  console.log(req.body);
   try {
     await pool.query(
       'INSERT INTO tickets (subject, category, priority, description, created_by) VALUES (?, ?, ?, ?, ?)',
@@ -142,9 +116,6 @@ app.get('/api/tickets', authenticate, async (req, res) => {
   res.json(rows);
 });
 
-
-
-
 // Get Tickets Count
 app.get('/api/tickets/count', authenticate, async (req, res) => {
   try {
@@ -163,8 +134,6 @@ app.get('/api/tickets/count', authenticate, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-
 
 // Get Tickets Stats by Priority (Admin only)
 app.get('/api/tickets/stats', authenticate, authorize('admin'), async (req, res) => {
@@ -197,22 +166,6 @@ app.get('/api/tickets/latest', authenticate, authorize('admin'), async (req, res
     res.status(500).json({ error: err.message });
   }
 });
-app.get('/api/tickets/top-creator',authenticate,authorize('admin'),async(req,res)=>{
-  try {
-    const [rows] = await pool.query(`
-      SELECT u.name, COUNT(*) as count
-      FROM tickets t
-      JOIN users u ON t.created_by = u.id
-      GROUP BY t.created_by
-      ORDER BY count DESC
-      LIMIT 5
-      `);
-      res.json(rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 
 // Get Single Ticket by ID
 app.get('/api/tickets/:id', authenticate, async (req, res) => {
@@ -232,62 +185,11 @@ app.get('/api/tickets/:id', authenticate, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-// GET all tickets (admin view)
-// app.get('/api/tickets', async (req, res) => {
-//   const [rows] = await db.query(`
-//     SELECT t.*, u.name AS assigned_to
-//     FROM tickets t
-//     LEFT JOIN users u ON t.assigned_to = u.id
-//     ORDER BY t.created_at DESC
-//   `);
-//   res.json(rows);
-// });
-
-// app.get('/api/tickets/count', authenticate, async (req, res) => {
-//   try {
-//     const total = await pool.query('SELECT COUNT(*) as count FROM tickets');
-//     const open = await pool.query("SELECT COUNT(*) as openCount FROM tickets WHERE status = 'open'");
-//     const my = await pool.query('SELECT COUNT(*) as myCount FROM tickets WHERE created_by = ?', [req.user.id]);
-
-//     res.json({
-//       count: total[0][0].count,
-//       openCount: open[0][0].openCount,
-//       myCount: my[0][0].myCount
-//     });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
-
-// app.put('/api/tickets/:id', authenticate, authorize('admin'), async (req, res) => {
-//   const { id } = req.params;
-//   const { status } = req.body;
-
-//   try {
-//     const [result] = await pool.query(
-//       'UPDATE raise_ticket.tickets SET status = ? WHERE id = ?',
-//       [status, id]
-//     );
-
-//     res.json({ message: 'Ticket status updated', id, status });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
-
 
 // Update Ticket (admin)
 app.put('/api/tickets/:id', authenticate, authorize('admin'), async (req, res) => {
   try {
     const { subject, category, priority, status } = req.body;
-    
-    // Validate status values
-    // const validStatuses = ['open', 'closed', 'pending', 'resolved'];
-    // if (status && !validStatuses.includes(status.toLowerCase())) {
-    //   return res.status(400).json({ message: 'Invalid status. Must be: open, closed, pending, or resolved' });
-    // }
     
     const [result] = await pool.query(
       'UPDATE tickets SET subject=?, category=?, priority=?, status=? WHERE id=?',
@@ -305,7 +207,7 @@ app.put('/api/tickets/:id', authenticate, authorize('admin'), async (req, res) =
   }
 });
 
-// // Delete Ticket (admin)
+// Delete Ticket (admin)
 app.delete('/api/tickets/:id', authenticate, authorize('admin'), async (req, res) => {
   try {
     const [result] = await pool.query('DELETE FROM tickets WHERE id=?', [req.params.id]);
