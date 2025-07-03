@@ -8,7 +8,15 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+// app.use(cors());
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'https://ticketsystem-klq3.onrender.com', // ✅ your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true // if you're using cookies/auth tokens
+}));
+
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -82,39 +90,42 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+
+
 // User Login
-// app.post('/api/login', async (req, res) => {
-//   const { email, password } = req.body;
-//   const [user] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
-//   if (!user || !(await bcrypt.compare(password, user.password))) {
-//     return res.status(401).json({ message: 'Invalid credentials' });
-//   }
-//   const token = jwt.sign({ id: user.id, role: user.role }, 'secretkey', { expiresIn: '1d' });
-//   res.json({ token, role: user.role, username: user.name });
-// });
+
 app.post('/api/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password required' });
-    }
-
-    const [[user]] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
-
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET || 'secretkey', { expiresIn: '1d' });
-
-    res.json({ token, role: user.role, username: user.name });
-
-  } catch (err) {
-    console.error('Login Error:', err);
-    res.status(500).json({ message: 'Internal server error' });
+  const { email, password } = req.body;
+  const [[user]] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({ message: 'Invalid credentials' });
   }
+  const token = jwt.sign({ id: user.id, role: user.role }, 'secretkey', { expiresIn: '1d' });
+  res.json({ token, role: user.role, username: user.name });
 });
+// app.post('/api/login', async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     if (!email || !password) {
+//       return res.status(400).json({ message: 'Email and password required' });
+//     }
+
+//     const [[user]] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+
+//     if (!user || !(await bcrypt.compare(password, user.password))) {
+//       return res.status(401).json({ message: 'Invalid credentials' });
+//     }
+
+//     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET || 'secretkey', { expiresIn: '1d' });
+
+//     res.json({ token, role: user.role, username: user.name });
+
+//   } catch (err) {
+//     console.error('Login Error:', err);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 
 
 // Create Ticket (customer)
