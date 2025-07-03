@@ -93,11 +93,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
                     class="w-full px-4 py-3 pl-12 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed"
                   />
                   <mat-icon class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">lock</mat-icon>
-                  <button
+                  <!-- <button
                     type="button"
                     (click)="togglePassword()"
                     class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                  >
+                  > -->
                     <mat-icon class="text-xl">{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                   </button>
                 </div>
@@ -254,6 +254,7 @@ export class RegisterComponent {
   }
 });
   }
+}
   
   //yesterday
 //   togglePassword() {
