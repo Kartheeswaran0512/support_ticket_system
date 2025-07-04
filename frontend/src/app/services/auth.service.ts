@@ -32,7 +32,7 @@ export class AuthService {
   Adminregister(user: any): Observable<any> {
     return new Observable(observer => {
       // Simulate a real HTTP request
-      this.http.post(`${this.BASE_URL}/register`, user).subscribe({
+      this.http.post(`${this.BASE_URL}/adminregister`, user).subscribe({
         next: (response: any) => {
           // Store name and role to show in dashboard
           localStorage.setItem('username', user.name);
@@ -46,7 +46,7 @@ export class AuthService {
   }
    Adminlogin(credentials: any) {
     console.log(this.BASE_URL);
-    return this.http.post(`${this.BASE_URL}/login`, credentials);
+    return this.http.post(`${this.BASE_URL}/adminlogin`, credentials);
   }
 
   login(credentials: any) {
@@ -59,7 +59,14 @@ export class AuthService {
     localStorage.removeItem('role');
     localStorage.removeItem('username');
     this.loggedIn.next(false);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/register']);
+  }
+  Adminlogout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('username');
+    this.loggedIn.next(false);
+    this.router.navigate(['/adminregister']);
   }
 
   setSession(token: string, role: string, username?: string) {

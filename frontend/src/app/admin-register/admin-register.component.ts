@@ -210,7 +210,7 @@ export class AdminRegisterComponent {
         this.isLoading = false;
         this.success = 'Account created successfully! Redirecting to login...';
         setTimeout(() => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/adminlogin']);
         }, 2000);
       },
       error: err => {
