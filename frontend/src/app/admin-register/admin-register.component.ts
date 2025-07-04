@@ -199,7 +199,8 @@ export class AdminRegisterComponent {
     this.isLoading = true;
     this.error = '';
     this.success = '';
-    const userData = {
+
+    const AdminData = {
     name: this.name,
     email: this.email,
     password: this.password,
@@ -225,8 +226,8 @@ export class AdminRegisterComponent {
   //     }
   //   });
   // }
-  console.log('register ',userData);
-  this.auth.Adminregister(userData).subscribe({
+  console.log('register ',AdminData);
+  this.auth.Adminregister(AdminData).subscribe({
   next: (res) => {
     console.log('✅ Registration success:', res);
     this.isLoading = false;
