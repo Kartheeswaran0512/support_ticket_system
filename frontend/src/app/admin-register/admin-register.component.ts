@@ -199,7 +199,7 @@ export class AdminRegisterComponent {
     this.isLoading = true;
     this.error = '';
     this.success = '';
-      const userData = {
+    const userData = {
     name: this.name,
     email: this.email,
     password: this.password,
@@ -225,6 +225,7 @@ export class AdminRegisterComponent {
   //     }
   //   });
   // }
+  console.log('register ',userData);
   this.auth.Adminregister(userData).subscribe({
   next: (res) => {
     console.log('✅ Registration success:', res);
