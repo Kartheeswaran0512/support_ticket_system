@@ -177,7 +177,7 @@ export class AdminRegisterComponent {
   name = '';
   email = '';
   password = '';
-  role = 'customer';
+  role = 'admin';
   error = '';
   success = '';
   isLoading = false;
