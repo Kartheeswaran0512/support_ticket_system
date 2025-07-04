@@ -217,7 +217,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         </div>
 
         <!-- Quick Actions -->
-        <div class=" bg-red-500
+        <div class=" bg-red-300
 rounded-2xl shadow-lg p-6">
           <h2 class="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
