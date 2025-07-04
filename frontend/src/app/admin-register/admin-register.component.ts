@@ -185,7 +185,7 @@ export class AdminRegisterComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  onRegister() {
+  onAdminRegister() {
     if (!this.name || !this.email || !this.password) {
       this.error = 'Please fill in all fields';
       return;
@@ -199,26 +199,50 @@ export class AdminRegisterComponent {
     this.isLoading = true;
     this.error = '';
     this.success = '';
-    
-    this.auth.Adminregister({ 
-      name: this.name, 
-      email: this.email, 
-      password: this.password, 
-      role: this.role || 'admin' 
-    }).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this.success = 'Account created successfully! Redirecting to login...';
-        setTimeout(() => {
-          this.router.navigate(['/adminlogin']);
-        }, 2000);
-      },
-      error: err => {
-        this.isLoading = false;
-        this.error = err.error.message || 'Registration failed. Please try again.';
-      }
-    });
+      const userData = {
+    name: this.name,
+    email: this.email,
+    password: this.password,
+    role: this.role  // fallback role
+  };
+    //old code
+  //   this.auth.Adminregister({ 
+  //     name: this.name, 
+  //     email: this.email, 
+  //     password: this.password, 
+  //     role: this.role 
+  //   }).subscribe({
+  //     next: () => {
+  //       this.isLoading = false;
+  //       this.success = 'Account created successfully! Redirecting to login...';
+  //       setTimeout(() => {
+  //         this.router.navigate(['/adminlogin']);
+  //       }, 2000);
+  //     },
+  //     error: err => {
+  //       this.isLoading = false;
+  //       this.error = err.error.message || 'Registration failed. Please try again.';
+  //     }
+  //   });
+  // }
+  this.auth.Adminregister(userData).subscribe({
+  next: (res) => {
+    console.log('✅ Registration success:', res);
+    this.isLoading = false;
+    this.success = '🎉 Account created! Redirecting...';
+    setTimeout(() => this.router.navigate(['/adminlogin']), 2000);
+  },
+  error: (err) => {
+    console.error('❌ Registration failed:', err);
+    this.isLoading = false;
+    this.error = err?.error?.message || 'Registration failed. Please try again.';
+  },
+  complete: () => {
+    console.log('✅ Register observable completed');
   }
+});
+  }
+
   
   togglePassword() {
     this.showPassword = !this.showPassword;
