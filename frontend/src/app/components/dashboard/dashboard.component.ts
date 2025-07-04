@@ -17,7 +17,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
       <div class="max-w-4xl mx-auto">
         
         <!-- Header -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <div class="bg-gray-900 rounded-2xl shadow-lg p-6 mb-6">
           <!-- <div class="bg-white/70 backdrop-blur-md shadow-md rounded-xl p-4"> -->
           <div class="flex justify-between items-center">
             <div>
@@ -40,7 +40,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         </div>
 
         <!-- Statistics Cards -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <div class="bg-blue-100 rounded-2xl shadow-lg p-6 mb-6">
           <!-- <div class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl p-6 shadow-lg"> -->
   <!-- Total Tickets, Open, Closed, Top Creator, Latest Ticket -->
 
@@ -187,7 +187,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         <!-- Admin Charts Section -->
         <div *ngIf="role === 'admin'" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <!-- Pie Chart -->
-           <div class="bg-white rounded-2xl shadow-lg p-6"> 
+           <div class="bg-yellow-100 rounded-2xl shadow-lg p-6"> 
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Ticket Status Distribution</h3>
             <ngx-charts-pie-chart
               [results]="pieChartData"
@@ -217,7 +217,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         </div>
 
         <!-- Quick Actions -->
-        <div class="bg-white rounded-2xl shadow-lg p-6">
+        <div class=" bg-yellow-50
+rounded-2xl shadow-lg p-6">
           <h2 class="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
