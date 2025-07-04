@@ -120,7 +120,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
                     [disabled]="isLoading"
                     class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 disabled:bg-gray-50 disabled:cursor-not-allowed appearance-none bg-white"
                   >
-                    <option value="Admin">Admin</option>
+                    <option value="admin">Admin</option>
                     <!-- <option value="admin">Admin - Manage all tickets</option> -->
                   </select>
                   <mat-icon class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">group</mat-icon>
