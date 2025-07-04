@@ -191,7 +191,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Ticket Status Distribution</h3>
             <ngx-charts-pie-chart
               [results]="pieChartData"
-              
+              [view]="[400, 300]"
               [legend]="true"
               [labels]="true"
               [doughnut]="false"
@@ -204,7 +204,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Tickets by Priority</h3>
             <ngx-charts-bar-vertical
               [results]="barChartData"
-              
+              [view]="[400, 300]"
               [xAxis]="true"
               [yAxis]="true"
               [legend]="false"
