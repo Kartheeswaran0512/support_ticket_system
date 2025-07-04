@@ -17,7 +17,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
       <div class="max-w-4xl mx-auto">
         
         <!-- Header -->
-        <div class="bg-gray-900 rounded-2xl shadow-lg p-6 mb-6">
+        <div class="bg-gray-300 rounded-2xl shadow-lg p-6 mb-6">
           <!-- <div class="bg-white/70 backdrop-blur-md shadow-md rounded-xl p-4"> -->
           <div class="flex justify-between items-center">
             <div>
