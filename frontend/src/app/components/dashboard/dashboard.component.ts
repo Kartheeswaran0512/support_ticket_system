@@ -200,7 +200,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
           </div>
           
           <!-- Bar Chart -->
-          <div class="bg-white rounded-2xl shadow-lg p-6">
+          <div class="bg-orange-100 rounded-2xl shadow-lg p-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Tickets by Priority</h3>
             <ngx-charts-bar-vertical
               [results]="barChartData"
