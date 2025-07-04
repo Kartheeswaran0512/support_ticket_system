@@ -185,7 +185,7 @@ export class AdminRegisterComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  onAdminRegister() {
+  onRegister() {
     if (!this.name || !this.email || !this.password) {
       this.error = 'Please fill in all fields';
       return;
