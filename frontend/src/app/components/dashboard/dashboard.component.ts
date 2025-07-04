@@ -187,11 +187,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         <!-- Admin Charts Section -->
         <div *ngIf="role === 'admin'" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <!-- Pie Chart -->
-           <div class="bg-yellow-100 rounded-2xl shadow-lg p-3"> 
+           <div class="bg-yellow-100 rounded-2xl shadow-lg p-6"> 
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Ticket Status Distribution</h3>
+            <div class="w=full">
             <ngx-charts-pie-chart
               [results]="pieChartData"
-              [view]="[400, 300]"
+              
               [legend]="true"
               [labels]="true"
               [doughnut]="false"
@@ -202,9 +203,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
           <!-- Bar Chart -->
           <div class="bg-orange-100 rounded-2xl shadow-lg p-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Tickets by Priority</h3>
+            <div class="w=full">
             <ngx-charts-bar-vertical
               [results]="barChartData"
-              [view]="[400, 300]"
+              
               [xAxis]="true"
               [yAxis]="true"
               [legend]="false"
