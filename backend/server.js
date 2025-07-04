@@ -107,7 +107,7 @@ app.post('/api/adminregister', async (req, res) => {
   try {
     const [existing] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
     if (existing.length > 0) return res.status(400).json({ message: 'Email already exists' });
-    await pool.query('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, hashed, role || 'customer']);
+    await pool.query('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, hashed, role || 'Admin']);
     res.json({ message: 'User registered' });
   } catch (err) {
     res.status(500).json({ error: err.message });
