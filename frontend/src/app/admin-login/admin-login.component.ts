@@ -139,7 +139,7 @@ export class AdminLoginComponent {
     this.isLoading = true;
     this.error = '';
     
-    this.auth.login({ email: this.email, password: this.password }).subscribe({
+    this.auth.Adminlogin({ email: this.email, password: this.password }).subscribe({
       next: (res: any) => {
         this.auth.setSession(res.token, res.role, res.username);
         this.isLoading = false;

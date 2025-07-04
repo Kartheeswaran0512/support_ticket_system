@@ -29,6 +29,25 @@ export class AuthService {
       });
     });
   }
+  Adminregister(user: any): Observable<any> {
+    return new Observable(observer => {
+      // Simulate a real HTTP request
+      this.http.post(`${this.BASE_URL}/register`, user).subscribe({
+        next: (response: any) => {
+          // Store name and role to show in dashboard
+          localStorage.setItem('username', user.name);
+          localStorage.setItem('role', user.role);
+          observer.next(response);
+          observer.complete();
+        },
+        error: err => observer.error(err)
+      });
+    });
+  }
+   Adminlogin(credentials: any) {
+    console.log(this.BASE_URL);
+    return this.http.post(`${this.BASE_URL}/login`, credentials);
+  }
 
   login(credentials: any) {
     console.log(this.BASE_URL);

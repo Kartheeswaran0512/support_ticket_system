@@ -200,11 +200,11 @@ export class AdminRegisterComponent {
     this.error = '';
     this.success = '';
     
-    this.auth.register({ 
+    this.auth.Adminregister({ 
       name: this.name, 
       email: this.email, 
       password: this.password, 
-      role: this.role 
+      role: this.role || 'admin' 
     }).subscribe({
       next: () => {
         this.isLoading = false;
