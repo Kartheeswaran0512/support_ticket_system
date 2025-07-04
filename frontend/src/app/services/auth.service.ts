@@ -35,8 +35,8 @@ export class AuthService {
       this.http.post(`${this.BASE_URL}/adminregister`, user).subscribe({
         next: (response: any) => {
           // Store name and role to show in dashboard
-          localStorage.setItem('username', user.name);
-          localStorage.setItem('role', user.role);
+          localStorage.setItem('Adminusername', user.name);
+          localStorage.setItem('Adminrole', user.role);
           observer.next(response);
           observer.complete();
         },
