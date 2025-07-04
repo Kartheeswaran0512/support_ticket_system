@@ -159,7 +159,7 @@ app.post('/api/login', async (req, res) => {
 });
 
 // admin login 
-app.post('/api/login', async (req, res) => {
+app.post('/api/adminlogin', async (req, res) => {
   const { email, password } = req.body;
   const [[user]] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
   if (!user || !(await bcrypt.compare(password, user.password))) {
