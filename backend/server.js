@@ -88,53 +88,77 @@ function authorize(...allowedRoles) {
 
 // User Registration
 //old code
-// app.post('/api/register', async (req, res) => {
-//   const { name, email, password, role } = req.body;
-//   const hashed = await bcrypt.hash(password, 10);
-//   try {
-//     const [existing] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
-//     if (existing.length > 0) return res.status(400).json({ message: 'Email already exists' });
-//     await pool.query('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, hashed, role || 'customer']);
-//     res.json({ message: 'User registered' });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
-//update code(admin,customer)
 app.post('/api/register', async (req, res) => {
   const { name, email, password, role } = req.body;
-
-  // Validate role
-  if (!['admin', 'customer'].includes(role)) {
-    return res.status(400).json({ message: 'Invalid or missing role. Must be "admin" or "customer".' });
-  }
-
+  const hashed = await bcrypt.hash(password, 10);
   try {
-    // Hash password
-    const hashed = await bcrypt.hash(password, 10);
-
-    // Check if email already exists
     const [existing] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
-    if (existing.length > 0) {
-      return res.status(400).json({ message: 'Email already exists' });
-    }
-
-    // Insert user
-    await pool.query(
-      'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
-      [name, email, hashed, role]
-    );
-
-    res.json({ message: 'User registered successfully' });
-
+    if (existing.length > 0) return res.status(400).json({ message: 'Email already exists' });
+    await pool.query('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, hashed, role || 'customer']);
+    res.json({ message: 'User registered' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// admin register
+app.post('/api/adminregister', async (req, res) => {
+  const { name, email, password, role } = req.body;
+  const hashed = await bcrypt.hash(password, 10);
+  try {
+    const [existing] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (existing.length > 0) return res.status(400).json({ message: 'Email already exists' });
+    await pool.query('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, hashed, role || 'customer']);
+    res.json({ message: 'User registered' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
+//update code(admin,customer)
+// app.post('/api/register', async (req, res) => {
+//   const { name, email, password, role } = req.body;
+
+//   // Validate role
+//   if (!['admin', 'customer'].includes(role)) {
+//     return res.status(400).json({ message: 'Invalid or missing role. Must be "admin" or "customer".' });
+//   }
+
+//   try {
+//     // Hash password
+//     const hashed = await bcrypt.hash(password, 10);
+
+//     // Check if email already exists
+//     const [existing] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+//     if (existing.length > 0) {
+//       return res.status(400).json({ message: 'Email already exists' });
+//     }
+
+//     // Insert user
+//     await pool.query(
+//       'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
+//       [name, email, hashed, role]
+//     );
+
+//     res.json({ message: 'User registered successfully' });
+
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
+
 // User Login
 
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+  const [[user]] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+  const token = jwt.sign({ id: user.id, role: user.role }, 'secretkey', { expiresIn: '1d' });
+  res.json({ token, role: user.role, username: user.name });
+});
+
+// admin login 
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   const [[user]] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);

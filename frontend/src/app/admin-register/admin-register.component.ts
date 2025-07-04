@@ -203,7 +203,7 @@ export class AdminRegisterComponent {
     name: this.name,
     email: this.email,
     password: this.password,
-    role: this.role  // fallback role
+    role: this.role   // fallback role
   };
     //old code
   //   this.auth.Adminregister({ 
