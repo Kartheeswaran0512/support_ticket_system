@@ -16,10 +16,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         
         <!-- Logo/Brand Section -->
         <div class="text-center mb-8">
-          <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4 shadow-lg">
+          <!-- <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4 shadow-lg">
             <mat-icon class="text-white text-3xl">support_agent</mat-icon>
           </div>
-          <h1 class="text-3xl font-bold text-gray-800 mb-2">Support Portal</h1>
+          <h1 class="text-3xl font-bold text-gray-800 mb-2">Support Portal</h1> -->
           <p class="text-gray-600">Sign in to your account</p>
         </div>
 
