@@ -13,8 +13,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatButtonModule, RouterModule, NgxChartsModule],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 p-4">
-      <div class="max-w-4xl mx-auto">
+    <!-- <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 p-4"> -->
+    <div class="bg-gray-900  min-h-screen p-4">  
+    <div class="max-w-4xl mx-auto">
+
         
         <!-- Header -->
         <div class="bg-gray-300 rounded-2xl shadow-lg p-6 mb-6">
