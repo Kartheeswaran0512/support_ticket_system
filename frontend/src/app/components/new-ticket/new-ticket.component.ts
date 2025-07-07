@@ -254,6 +254,7 @@ export class NewTicketComponent {
     this.ticketService.createTicket(this.ticket).subscribe({
       next: () => {
         this.isSubmitting = false;
+        alert('Create Ticket Successfully');
         this.router.navigate(['/my-tickets']);
       },
       error: err => {
