@@ -104,10 +104,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         </div>
         
         <!-- Footer -->
-        <div class="text-center mt-8">
+        <!-- <div class="text-center mt-8">
           <p class="text-sm text-gray-500">
             © 2024 Support Portal. All rights reserved.
-          </p>
+          </p> -->
       </div>
         
       
