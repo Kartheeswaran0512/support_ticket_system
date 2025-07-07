@@ -34,10 +34,10 @@ import { RouterModule } from '@angular/router';
       <div class="max-w-4xl mx-auto">
         <!-- Back Button -->
          <div class=" bg-yellow-300">
-        <p mat-stroked-button routerLink="/my-tickets" class=" mb-4">
+        <button mat-stroked-button routerLink="/my-tickets" class=" mb-4">
           <mat-icon>arrow_back</mat-icon>
           Back to My Tickets
-        </p>
+         </button>
         </div>
         
         <!-- Loading State -->
