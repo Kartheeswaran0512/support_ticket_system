@@ -20,13 +20,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         </div>
 
         <!-- Login Card -->
-        <!-- <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
           <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
             <h2 class="text-2xl font-semibold text-white text-center flex items-center justify-center gap-2">
               <mat-icon>login</mat-icon>
               Welcome Back
             </h2>
-          </div> -->
+          </div>
           
           <div class="p-8">
             <form (ngSubmit)="onLogin()" class="space-y-6">
