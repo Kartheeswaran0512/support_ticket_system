@@ -48,7 +48,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
           <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold text-white">Statistics</h2>
+            <h2 class="text-2xl font-semibold text-yellow">Statistics</h2>
             <button
               (click)="loadCount()"
               class="flex items-center gap-2 px-3 py-1 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
@@ -190,7 +190,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         <div *ngIf="role === 'admin'" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <!-- Pie Chart -->
            <div class="bg-yellow-100 rounded-2xl shadow-lg p-6"> 
-            <h3 class="text-lg font-semibold text-white mb-4">Ticket Status Distribution</h3>
+            <h3 class="text-lg font-semibold text-blue mb-4">Ticket Status Distribution</h3>
             <ngx-charts-pie-chart
               [results]="pieChartData"
               [view]="[400, 300]"
@@ -203,7 +203,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
           
           <!-- Bar Chart -->
           <div class="bg-orange-100 rounded-2xl shadow-lg p-6">
-            <h3 class="text-lg font-semibold text-white mb-4">Tickets by Priority</h3>
+            <h3 class="text-lg font-semibold text-blue mb-4">Tickets by Priority</h3>
             <ngx-charts-bar-vertical
               [results]="barChartData"
               [view]="[400, 300]"
