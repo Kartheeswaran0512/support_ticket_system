@@ -35,8 +35,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
           <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
             <mat-icon class="text-blue-600 text-3xl">confirmation_number</mat-icon>
           </div>
-          <h1 class="text-4xl font-bold text-gray-800 mb-2">Create New Ticket</h1>
-          <p class="text-gray-600">Submit your support request and we'll get back to you soon</p>
+          <h1 class="text-4xl font-bold text-yellow-800 mb-2">Create New Ticket</h1>
+          <p class="text-yellow-600">Submit your support request and we'll get back to you soon</p>
         </div>
 
         <!-- Form Card -->
