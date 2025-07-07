@@ -111,9 +111,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
           <p class="text-sm text-gray-500">
             © 2024 Support Portal. All rights reserved.
           </p>
-        </div>
-        
       </div>
+        
+      
     
   `
 })
