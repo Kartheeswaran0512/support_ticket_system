@@ -30,7 +30,7 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   template: `
-    <div class="min-h-screen bg-gray-50 p-4">
+    <div class="min-h-screen bg-gray-900 p-4">
       <div class="max-w-4xl mx-auto">
         <!-- Back Button -->
         <button mat-stroked-button routerLink="/my-tickets" class="mb-4">
