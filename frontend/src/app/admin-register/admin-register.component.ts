@@ -13,7 +13,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true,
   imports: [CommonModule, FormsModule, MatIconModule, MatProgressSpinnerModule,RouterModule],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-100 flex items-center justify-center p-4">
+    <!-- <div class="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-100 flex items-center justify-center p-4"> -->
+    <div class="text-gray-900 min-h-screen p-4">
       <div class="w-full max-w-md">
         
         <!-- Logo/Brand Section -->
