@@ -12,7 +12,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [CommonModule, FormsModule, MatIconModule, MatProgressSpinnerModule],
   template: `
     <!-- <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 flex items-center justify-center p-4"> -->
-      <div class="bg-gray-900 min-h-screen flex items-center justify-center p-4"> 
+      <div class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md"> 
         
       <div class="text-center mb-8">
           <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4 shadow-lg">
@@ -114,6 +115,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
           <p class="text-sm text-gray-500">
             © 2024 Support Portal. All rights reserved.
           </p> -->
+        </div>
       </div>
         
       
