@@ -22,8 +22,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
           <div class="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-4 shadow-lg">
             <mat-icon class="text-white text-3xl">person_add</mat-icon>
           </div>
-          <h1 class="text-3xl font-bold text-gray-800 mb-2">Join Support Portal</h1>
-          <p class="text-gray-600">Create your account to get started</p>
+          <h1 class="text-3xl font-bold text-yellow-300 mb-2">Join Support Portal</h1>
+          <p class="text-yellow-300">Create your account to get started</p>
         </div>
 
         <!-- Register Card -->
@@ -165,7 +165,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         
         <!-- Footer -->
         <div class="text-center mt-8">
-          <p class="text-sm text-gray-500">
+          <p class="text-sm text-yellow-300">
             By creating an account, you agree to our Terms of Service
           </p>
         </div>
