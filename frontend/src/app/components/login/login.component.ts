@@ -16,21 +16,17 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         
         <!-- Logo/Brand Section -->
         <div class="text-center mb-8">
-          <!-- <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4 shadow-lg">
-            <mat-icon class="text-white text-3xl">support_agent</mat-icon>
-          </div>
-          <h1 class="text-3xl font-bold text-gray-800 mb-2">Support Portal</h1> -->
           <p class="text-gray-600">Sign in to your account</p>
         </div>
 
         <!-- Login Card -->
-        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <!-- <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
           <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
             <h2 class="text-2xl font-semibold text-white text-center flex items-center justify-center gap-2">
               <mat-icon>login</mat-icon>
               Welcome Back
             </h2>
-          </div>
+          </div> -->
           
           <div class="p-8">
             <form (ngSubmit)="onLogin()" class="space-y-6">
