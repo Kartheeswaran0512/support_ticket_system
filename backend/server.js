@@ -344,46 +344,63 @@ app.delete('/api/tickets/:id', authenticate, authorize('admin'), async (req, res
 });
 
 // // Add Comment + Attachment
-// old code
-// app.post('/api/comments/:ticketId', authenticate, upload.single('attachment'), async (req, res) => {
-//   const { comment } = req.body;
-//   const attachment = req.file?.filename || null;
-//   await pool.query(
-//     'INSERT INTO comments (ticket_id, user_id, comment, attachment) VALUES (?, ?, ?, ?)',
-//     [req.params.ticketId, req.user.id, comment, attachment]
-//   );
-//   res.json({ message: 'Comment added' });
-// });
 
-// Add Comment + Attachment (Auto-close if admin)
 app.post('/api/comments/:ticketId', authenticate, upload.single('attachment'), async (req, res) => {
   const { comment } = req.body;
   const attachment = req.file?.filename || null;
   const ticketId = req.params.ticketId;
   const userId = req.user.id;
   const role = req.user.role;
+  try{
+  await pool.query(
+    'INSERT INTO comments (ticket_id, user_id, comment, attachment) VALUES (?, ?, ?, ?)',
+    [req.params.ticketId, req.user.id, comment, attachment]
+  );
 
-  try {
-    // 1. Insert comment
-    await pool.query(
-      'INSERT INTO comments (ticket_id, user_id, comment, attachment) VALUES (?, ?, ?, ?)',
-      [ticketId, userId, comment, attachment]
-    );
-
-    // 2. If user is admin, auto-close the ticket
-    if (role === 'admin') {
+   if (role === 'admin') {
       await pool.query(
         "UPDATE tickets SET status = 'closed' WHERE id = ?",
         [ticketId]
       );
     }
-
-    res.json({ message: 'Comment added successfully' });
-  } catch (err) {
+  res.json({ message: 'Comment added' });
+  }catch(err){
     console.error('Error adding comment:', err);
     res.status(500).json({ error: 'Failed to add comment' });
+ 
   }
+
 });
+
+// Add Comment + Attachment (Auto-close if admin)
+// app.post('/api/comments/:ticketId', authenticate, upload.single('attachment'), async (req, res) => {
+//   const { comment } = req.body;
+//   const attachment = req.file?.filename || null;
+//   const ticketId = req.params.ticketId;
+//   const userId = req.user.id;
+//   const role = req.user.role;
+
+//   try {
+//     // 1. Insert comment
+//     await pool.query(
+//       'INSERT INTO comments (ticket_id, user_id, comment, attachment) VALUES (?, ?, ?, ?)',
+//       [ticketId, userId, comment, attachment]
+//     );
+
+//     // 2. If user is admin, auto-close the ticket
+//     if (role === 'admin') {
+//       await pool.query(
+//         "UPDATE tickets SET status = 'closed' WHERE id = ?",
+//         [ticketId]
+//       );
+//     }
+
+//     res.json({ message: 'Comment added successfully' });
+//   } catch (err) {
+//     console.error('Error adding comment:', err);
+//     res.status(500).json({ error: 'Failed to add comment' });
+//   }
+// });
 
 // Get Comments for Ticket
 app.get('/api/comments/:ticketId', authenticate, async (req, res) => {
