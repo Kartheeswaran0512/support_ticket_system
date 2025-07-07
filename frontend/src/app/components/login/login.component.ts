@@ -14,10 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     <!-- <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 flex items-center justify-center p-4"> -->
       <div class="bg-gray-900 min-h-screen flex items-center justify-center p-4"> 
         
-        <!-- Logo/Brand Section -->
-        <div class="text-center mb-8">
-          <p class="text-gray-600">Sign in to your account</p>
-        </div>
+      
 
         <!-- Login Card -->
         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
