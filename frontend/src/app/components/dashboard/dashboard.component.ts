@@ -221,7 +221,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         <!-- Quick Actions -->
         <div class=" bg-red-150
 rounded-2xl shadow-lg p-6">
-          <h2 class="text-xl font-semibold text-white-800 mb-4">Quick Actions</h2>
+          <h2 class="text-xl font-semibold text-white mb-4">Quick Actions</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
               routerLink="/new-ticket"
