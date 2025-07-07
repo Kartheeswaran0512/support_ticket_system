@@ -118,7 +118,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         </div>
         
       </div>
-    </div>
+    
   `
 })
 export class LoginComponent {
