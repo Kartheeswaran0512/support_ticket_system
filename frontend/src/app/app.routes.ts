@@ -11,7 +11,7 @@ import { AdminRegisterComponent } from './admin-register/admin-register.componen
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/register', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'my-tickets', component: MyTicketsComponent, canActivate: [AuthGuard] },
   { path: 'new-ticket', component: NewTicketComponent, canActivate: [AuthGuard] },

@@ -104,7 +104,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
             <div class="mt-6 text-center">
               <p class="text-sm text-gray-600">
                 Don't have an account? 
-                <a href="/register" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">Sign In</a>
+                <a routerLink="/register" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">Sign In</a>
               </p>
             </div>
           </div>
