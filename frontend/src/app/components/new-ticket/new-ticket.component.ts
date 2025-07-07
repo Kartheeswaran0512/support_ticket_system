@@ -36,7 +36,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
             <mat-icon class="text-blue-600 text-3xl">confirmation_number</mat-icon>
           </div>
           <h1 class="text-4xl font-bold text-yellow-200 mb-2">Create New Ticket</h1>
-          <p class="text-yellow">Submit your support request and we'll get back to you soon</p>
+          <p class="text-yellow-300">Submit your support request and we'll get back to you soon</p>
         </div>
 
         <!-- Form Card -->
