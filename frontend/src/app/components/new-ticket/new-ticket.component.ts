@@ -26,8 +26,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressSpinnerModule
   ],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 p-4">
-      <div class="max-w-4xl mx-auto">
+    <!-- <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 p-4"> -->
+    <div class="bg-gray-900  min-h-screen p-4">  
+    <div class="max-w-4xl mx-auto">
         
         <!-- Header -->
         <div class="text-center mb-8">
