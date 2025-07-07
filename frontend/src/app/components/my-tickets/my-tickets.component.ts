@@ -29,7 +29,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4">
+    <!-- <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4"> -->
+      <div class="bg-gray-900  min-h-screen p-4">
       <div class="max-w-7xl mx-auto">
         
         <!-- Header -->
