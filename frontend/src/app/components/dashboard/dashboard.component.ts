@@ -24,14 +24,14 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
           <div class="flex justify-between items-center">
             <div>
               <h1 class="text-3xl font-bold text-white">Dashboard</h1>
-              <p class="text-gray-600 mt-1">
-                Welcome <span class="font-semibold text-indigo-600">{{ username }}</span>, 
-                <span class="text-sm bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">{{ role }}</span>
-              </p>
+              <h1 class="text-gray-600 mt-1">
+                Welcome <span class="font-semibold text-indigo-600">{{ username }}</span> ,
+                <span class="text-sm bg-indigo-100 text-indigo-700  px-2 py-1 rounded-full">{{ role }}</span>
+               </h1>
             </div>
             <button
               (click)="logout()"
-              class="flex items-center gap-2 px-4 py-2 border border-red-300 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              class="flex items-center mt-10 gap-2 px-4 py-2 border border-red-300 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -62,11 +62,13 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
           
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- Total Tickets -->
-            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 text-white">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 text-white cursor-pointer" 
+                 (click)="viewAllTickets()">
               <div class="flex items-center justify-between">
                 <div>
                   <p class="text-blue-100 text-sm mb-1">Total Tickets</p>
                   <p class="text-3xl font-bold">{{ totalTickets }}</p>
+                  <!-- <p class="text-blue-100 text-xs mt-1">Click to view all</p> -->
                 </div>
                 <div class="bg-blue-400 bg-opacity-30 p-3 rounded-lg">
                   <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -77,11 +79,13 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
             </div>
             
             <!-- Open Tickets -->
-            <div class="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-6 text-white">
+            <div class="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-6 text-white cursor-pointer" 
+                 (click)="viewOpenTickets()">
               <div class="flex items-center justify-between">
                 <div>
                   <p class="text-orange-100 text-sm mb-1">Open Tickets</p>
                   <p class="text-3xl font-bold">{{ openTickets }}</p>
+                  <!-- <p class="text-orange-100 text-xs mt-1">Click to view open</p> -->
                 </div>
                 <div class="bg-orange-400 bg-opacity-30 p-3 rounded-lg">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,11 +96,13 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
             </div>
             
             <!-- Closed Tickets -->
-            <div class="bg-gradient-to-r from-gray-500 to-gray-600 rounded-xl p-6 text-white">
+            <div class="bg-gradient-to-r from-gray-500 to-gray-600 rounded-xl p-6 text-white cursor-pointer" 
+                 (click)="viewClosedTickets()">
               <div class="flex items-center justify-between">
                 <div>
                   <p class="text-gray-100 text-sm mb-1">Closed Tickets</p>
                   <p class="text-3xl font-bold">{{ closedTickets }}</p>
+                  <!-- <p class="text-gray-100 text-xs mt-1">Click to view closed</p> -->
                 </div>
                 <div class="bg-gray-400 bg-opacity-30 p-3 rounded-lg">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,12 +155,15 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   <p><strong>Total Tickets:</strong> {{ topCreator.ticketCount }}</p>
 </div> -->
            <!-- Top Ticket Creator Card (Admin Only) -->
-<div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-6 text-white" *ngIf="topCreator && role === 'admin'">
+<div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-6 text-white cursor-pointer" 
+     *ngIf="topCreator && role === 'admin'" 
+     (click)="viewTopCreatorTickets()">
   <div class="flex items-center justify-between">
     <div>
       <p class="text-purple-100 text-lg mb-1">Top Creator</p>
-      <p class="text-lg  mb-1 ">{{ topCreator.name }}</p>
-      <p class="text-purple-200 font-bold text-lg">{{ topCreator.count }} Tickets</p>
+      <p class="text-lg mb-1">{{ topCreator.name }}</p>
+      <!-- <p class="text-purple-200 font-bold text-lg">{{ topCreator.ticket_count }} Tickets</p> -->
+      <!-- <p class="text-purple-100 text-xs mt-2">Click to view tickets</p> -->
     </div>
     <div class="bg-purple-400 bg-opacity-30 p-3 rounded-lg">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,6 +171,37 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
       </svg>
     </div>
+  </div>
+</div>
+
+<!-- Top Creator Tickets Modal -->
+<div *ngIf="showTopCreatorTickets" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-6 w-full max-w-4xl mx-4 max-h-[80vh] overflow-y-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">{{ topCreator.name }}'s Tickets ({{ topCreatorTickets.length }})</h2>
+      <button (click)="closeTopCreatorTickets()" class="text-gray-500 hover:text-gray-700">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="bg-yellow-300">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div *ngFor="let ticket of topCreatorTickets" class="bg-gray-50 rounded-lg p-4 border">
+        <div class="flex justify-between items-start mb-2">
+          <h3 class="font-semibold text-gray-800">{{ ticket.subject }}</h3>
+          <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{{ ticket.status }}</span>
+        </div>
+        <p class="text-sm text-gray-600 mb-2">Ticket #{{ ticket.id }}</p>
+        <p class="text-sm text-gray-600 mb-2">Priority: {{ ticket.priority }}</p>
+        <p class="text-xs text-gray-500">Created: {{ ticket.created_at | date:'short' }}</p>
+        <button (click)="viewTicketDetails(ticket.id)" 
+                class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
+          View Details →
+        </button>
+      </div>
+    </div>
+</div>
   </div>
 </div>
 
@@ -187,40 +227,47 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
         <!-- Admin Charts Section -->
-        <div *ngIf="role === 'admin'" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <!-- Pie Chart -->
-           <div class="bg-yellow-100 rounded-2xl shadow-lg p-6"> 
-            <h3 class="text-lg font-semibold text-blue mb-4">Ticket Status Distribution</h3>
-            <ngx-charts-pie-chart
-              [results]="pieChartData"
-              [view]="[400, 300]"
-              [legend]="true"
-              [labels]="true"
-              [doughnut]="false"
-              [arcWidth]="0.25">
-            </ngx-charts-pie-chart>
-          </div>
-          
-          <!-- Bar Chart -->
-          <div class="bg-orange-100 rounded-2xl shadow-lg p-6">
-            <h3 class="text-lg font-semibold text-blue mb-4">Tickets by Priority</h3>
-            <ngx-charts-bar-vertical
-              [results]="barChartData"
-              [view]="[400, 300]"
-              [xAxis]="true"
-              [yAxis]="true"
-              [legend]="false"
-              [showXAxisLabel]="true"
-              [showYAxisLabel]="true"
-              xAxisLabel="Priority"
-              yAxisLabel="Count">
-            </ngx-charts-bar-vertical>
-          </div>
-        </div>
+         <!-- old code -->
+       <div *ngIf="role === 'admin'" class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+  
+  <!-- Pie Chart: Ticket Status Distribution -->
+  <div class="bg-yellow-100 rounded-xl shadow-sm p-4 w-full h-auto">
+    <h3 class="text-lg font-semibold text-black mb-4">Ticket Status Distribution</h3>
+    <ngx-charts-pie-chart
+      [results]="pieChartData"
+      
+      [labels]="true"
+      [doughnut]="false"
+      [legendPosition]=" legendPos"
+      [view]="[350, 300]">
+    </ngx-charts-pie-chart>
+  </div>
+
+  <!-- Bar Chart: Tickets by Priority -->
+   <div class="ml-100">
+  <div class="bg-orange-100 rounded-xl shadow-sm  p-4 w-full h-auto">
+    <h3 class="text-lg font-semibold text-black mb-4">Tickets by Priority</h3>
+    <ngx-charts-bar-vertical
+      [results]="barChartData"
+      [legend]="false"
+      [xAxis]="true"
+      [yAxis]="true"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      xAxisLabel="Priority"
+      yAxisLabel="Count"
+      [legendPosition]="legendPos"
+      [view]="[350, 300]">
+    </ngx-charts-bar-vertical>
+  </div>
+</div>
+
+</div>
+
+
 
         <!-- Quick Actions -->
-        <div class=" bg-red-150
-rounded-2xl shadow-lg p-6">
+        <div class=" bg-red-150 rounded-2xl shadow-lg p-6">
           <h2 class="text-xl font-semibold text-white mb-4">Quick Actions</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button
@@ -274,17 +321,118 @@ rounded-2xl shadow-lg p-6">
         
       </div>
     </div>
+
+    <!-- All Tickets Modal -->
+    <div *ngIf="showAllTickets" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-4xl mx-4 max-h-[80vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">All Tickets ({{ allTickets.length }})</h2>
+          <button (click)="closeAllTickets()" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div *ngFor="let ticket of allTickets" class="bg-gray-50 rounded-lg p-4 border">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-semibold text-gray-800">{{ ticket.subject }}</h3>
+              <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{{ ticket.status }}</span>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Ticket #{{ ticket.id }}</p>
+            <p class="text-sm text-gray-600 mb-2">Priority: {{ ticket.priority }}</p>
+            <p class="text-xs text-gray-500">Created: {{ ticket.created_at | date:'short' }}</p>
+            <button (click)="viewTicketDetails(ticket.id)" 
+                    class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
+              View Details →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Open Tickets Modal -->
+    <div *ngIf="showOpenTickets" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-4xl mx-4 max-h-[80vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">Open Tickets ({{ openTicketsList.length }})</h2>
+          <button (click)="closeOpenTickets()" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div *ngFor="let ticket of openTicketsList" class="bg-orange-50 rounded-lg p-4 border border-orange-200">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-semibold text-gray-800">{{ ticket.subject }}</h3>
+              <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">{{ ticket.status }}</span>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Ticket #{{ ticket.id }}</p>
+            <p class="text-sm text-gray-600 mb-2">Priority: {{ ticket.priority }}</p>
+            <p class="text-xs text-gray-500">Created: {{ ticket.created_at | date:'short' }}</p>
+            <button (click)="viewTicketDetails(ticket.id)" 
+                    class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
+              View Details →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Closed Tickets Modal -->
+    <div *ngIf="showClosedTickets" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-4xl mx-4 max-h-[80vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold">Closed Tickets ({{ closedTicketsList.length }})</h2>
+          <button (click)="closeClosedTickets()" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div *ngFor="let ticket of closedTicketsList" class="bg-green-50 rounded-lg p-4 border border-green-200">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-semibold text-gray-800">{{ ticket.subject }}</h3>
+              <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">{{ ticket.status }}</span>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Ticket #{{ ticket.id }}</p>
+            <p class="text-sm text-gray-600 mb-2">Priority: {{ ticket.priority }}</p>
+            <p class="text-xs text-gray-500">Created: {{ ticket.created_at | date:'short' }}</p>
+            <button (click)="viewTicketDetails(ticket.id)" 
+                    class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
+              View Details →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `
 })
 export class DashboardComponent implements OnInit {
   role = '';
   username = '';
   totalTickets = 0;
+  tickets:any[]=[];
   openTickets = 0;
   closedTickets = 0;
   myTickets = 0;
   latestTicket: any;
   topCreator:any;
+  showTopCreatorTickets = false;
+  topCreatorTickets: any[] = [];
+  showAllTickets = false;
+  allTickets: any[] = [];
+  showOpenTickets = false;
+  openTicketsList: any[] = [];
+  showClosedTickets = false;
+  closedTicketsList: any[] = [];
+  legendPos: any = 'left';
+
 
   // Chart data
   pieChartData: any[] = [];
@@ -392,10 +540,101 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  loadTicketDetails(){
+    this.ticketService.getTickets().subscribe({
+      next: (res: any) => {
+        console.log('Tickets', res);
+        //this.tickets = res|| []
+        // this.totalTickets=this.totaltickets.length;
+      },
+      error: (err) => {
+        console.error('Error loading get ticket:', err);
+      }
+    });
+  }
+
   viewLatestTicket() {
     if (this.latestTicket) {
       this.router.navigate(['/ticket', this.latestTicket.id], { fragment: 'comments' });
     }
+  }
+
+  viewTopCreatorTickets() {
+    if (this.topCreator) {
+      this.ticketService.getTicketsByUser(this.topCreator.user_id).subscribe({
+        next: (tickets: any[]) => {
+          this.topCreatorTickets = tickets;
+          this.showTopCreatorTickets = true;
+        },
+        error: (err: any) => {
+          console.error('Error loading creator tickets:', err);
+        }
+      });
+    }
+  }
+
+  closeTopCreatorTickets() {
+    this.showTopCreatorTickets = false;
+    this.topCreatorTickets = [];
+  }
+
+  viewTicketDetails(ticketId: number) {
+    this.router.navigate(['/ticket', ticketId]);
+    this.closeTopCreatorTickets();
+    this.closeAllTickets();
+    this.closeOpenTickets();
+    this.closeClosedTickets();
+  }
+
+  viewAllTickets() {
+    this.ticketService.getTickets().subscribe({
+      next: (tickets: any[]) => {
+        this.allTickets = tickets;
+        this.showAllTickets = true;
+      },
+      error: (err) => {
+        console.error('Error loading all tickets:', err);
+      }
+    });
+  }
+
+  closeAllTickets() {
+    this.showAllTickets = false;
+    this.allTickets = [];
+  }
+
+  viewOpenTickets() {
+    this.ticketService.getTicketsByStatus('open').subscribe({
+      next: (tickets: any[]) => {
+        this.openTicketsList = tickets;
+        this.showOpenTickets = true;
+      },
+      error: (err) => {
+        console.error('Error loading open tickets:', err);
+      }
+    });
+  }
+
+  closeOpenTickets() {
+    this.showOpenTickets = false;
+    this.openTicketsList = [];
+  }
+
+  viewClosedTickets() {
+    this.ticketService.getTicketsByStatus('closed').subscribe({
+      next: (tickets: any[]) => {
+        this.closedTicketsList = tickets;
+        this.showClosedTickets = true;
+      },
+      error: (err) => {
+        console.error('Error loading closed tickets:', err);
+      }
+    });
+  }
+
+  closeClosedTickets() {
+    this.showClosedTickets = false;
+    this.closedTicketsList = [];
   }
 
   logout(): void {

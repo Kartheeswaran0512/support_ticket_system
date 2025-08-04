@@ -48,7 +48,7 @@ import { RouterModule } from '@angular/router';
         <!-- Ticket Details -->
         <mat-card *ngIf="ticket" class="mb-6">
           <mat-card-header>
-            <mat-icon mat-card-avatar>confirmation_number</mat-icon>
+            <!-- <mat-icon mat-card-avatar>confirmation_number</mat-icon> -->
             <mat-card-title>{{ ticket.subject }}</mat-card-title>
             <mat-card-subtitle>Ticket #{{ ticket.id }}</mat-card-subtitle>
           </mat-card-header>
@@ -67,7 +67,7 @@ import { RouterModule } from '@angular/router';
               <div>
                 <p class="text-sm text-gray-600">Status</p>
                 <mat-chip [color]="getStatusColor(ticket.status)" selected>
-                  {{ ticket.status }}
+                  {{ ticket.status ||'open' }}
                 </mat-chip>
               </div>
             </div>
@@ -80,19 +80,19 @@ import { RouterModule } from '@angular/router';
 
     <mat-card class="comments-section">
       <mat-card-header>
-        <mat-icon mat-card-avatar>comment</mat-icon>
+        <!-- <mat-icon mat-card-avatar>comment</mat-icon> -->
         <mat-card-title>Comments ({{ comments.length }})</mat-card-title>
       </mat-card-header>
       
       <mat-card-content>
         <div *ngIf="comments.length === 0" class="no-comments">
-          <mat-icon>chat_bubble_outline</mat-icon>
+          <!-- <mat-icon>chat_bubble_outline</mat-icon> -->
           <p>No comments yet. Be the first to comment!</p>
         </div>
         
         <div *ngFor="let comment of comments; let last = last" class="comment-item">
           <div class="comment-header">
-            <mat-icon class="user-icon">account_circle</mat-icon>
+            <!-- <mat-icon class="user-icon">account_circle</mat-icon> -->
             <span class="username">{{ comment.user_id }}</span>
           </div>
           <div class="comment-content">
@@ -111,7 +111,7 @@ import { RouterModule } from '@angular/router';
 
     <mat-card class="add-comment-section">
       <mat-card-header>
-        <mat-icon mat-card-avatar>add_comment</mat-icon>
+        <!-- <mat-icon mat-card-avatar>add_comment</mat-icon> -->
         <mat-card-title>Add Comment</mat-card-title>
       </mat-card-header>
       
@@ -149,13 +149,13 @@ import { RouterModule } from '@angular/router';
   styles: [`
     .full-width {
       width: 100%;
-      margin-bottom: 16px;
+      margin-bottom: 30px;
     }
     
     .comments-section, .add-comment-section {
       margin-bottom: 20px;
     }
-    
+   
     .no-comments {
       text-align: center;
       padding: 40px 20px;
@@ -181,7 +181,7 @@ import { RouterModule } from '@angular/router';
     }
     
     .user-icon {
-      margin-right: 8px;
+      margin-right:8px;
       color: #666;
     }
     

@@ -8,12 +8,11 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-//app.use(cors());
-app.use(cors({
-  origin: 'https://ticketsystem-klq3.onrender.com',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true // only if you're using tokens/cookies
-}));
+app.use(cors());
+// app.use(cors({
+//   origin: 'http://localhost:4200',
+//   credentials: true // only if you're using tokens/cookies
+// }));
 // const cors = require('cors');
 
 // app.use(cors({
@@ -36,17 +35,51 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // DB connection
+// const pool = mysql.createPool({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'welcome123',
+//   database: 'raise_ticket',
+//   port:4000
+  // host: process.env.DB_HOST,
+  // user: process.env.DB_USER,
+  // password: process.env.DB_PASSWORD,
+  // database: process.env.DB_NAME,
+  // port: process.env.DB_PORT || 4000,
+// });
+// async function testConnection() {
+//   try {
+//     const pool = mysql.createPool({
+//       host: 'localhost',
+//       user: 'root',
+//       password: 'welcome123',
+//       database: 'raise_ticket',
+//       port: 3306,
+//     });
+//     await pool.query('SELECT 1');
+//     console.log('✅ MySQL connected successfully');
+//   } catch (err) {
+//     console.error('❌ DB Connection failed:', err.message);
+//   }
+// }
 const pool = mysql.createPool({
-  // host: 'localhost',
-  // user: 'root',
-  // password: 'welcome123',
-  // database: 'raise_ticket',
-    host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306,
+  host: 'localhost',
+  user: 'root',
+  password: 'welcome123',
+  database: 'raise_ticket',
+  port: 3306,
 });
+
+async function testConnection() {
+  try {
+    await pool.query('SELECT 1');
+    console.log('✅ MySQL connected successfully');
+  } catch (err) {
+    console.error('❌ DB Connection failed:', err.message);
+  }
+}
+
+testConnection();
 
 // JWT Auth Middleware
 function authenticate(req, res, next) {
@@ -209,11 +242,16 @@ app.post('/api/tickets', authenticate, async (req, res) => {
 
 // Get All Tickets (admin) or User's Tickets (customer)
 app.get('/api/tickets', authenticate, async (req, res) => {
+  try{
   const sql = req.user.role === 'admin'
     ? 'SELECT * FROM tickets'
     : 'SELECT * FROM tickets WHERE created_by = ?';
   const [rows] = await pool.query(sql, req.user.role === 'admin' ? [] : [req.user.id]);
   res.json(rows);
+}catch(err){
+  console.log('fetching data error');
+  res.status(500).json({ error: err.message });
+}
 });
 
 // Get Tickets Count
@@ -269,7 +307,7 @@ app.get('/api/tickets/latest', authenticate, authorize('admin'), async (req, res
 app.get('/api/tickets/top-creator', authenticate, authorize('admin'), async (req, res) => {
   try {
     const [rows] = await pool.query(`
-      SELECT users.name, COUNT(tickets.id) as ticket_count
+      SELECT users.id as user_id, users.name, COUNT(tickets.id) as ticket_count
       FROM users
       JOIN tickets ON users.id = tickets.created_by
       GROUP BY users.id
@@ -286,6 +324,35 @@ app.get('/api/tickets/top-creator', authenticate, authorize('admin'), async (req
     res.status(500).json({ error: err.message });
   }
 });
+
+// Get Tickets by User ID (Admin only)
+app.get('/api/tickets/user/:userId', authenticate, authorize('admin'), async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      'SELECT * FROM tickets WHERE created_by = ? ORDER BY created_at DESC',
+      [req.params.userId]
+    );
+    
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get Tickets by Status (Admin only)
+app.get('/api/tickets/status/:status', authenticate, authorize('admin'), async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      'SELECT * FROM tickets WHERE status = ? ORDER BY created_at DESC',
+      [req.params.status]
+    );
+    
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 // Get Single Ticket by ID
 app.get('/api/tickets/:id', authenticate, async (req, res) => {
@@ -307,14 +374,19 @@ app.get('/api/tickets/:id', authenticate, async (req, res) => {
 });
 
 // Update Ticket (admin)
+//old code
 app.put('/api/tickets/:id', authenticate, authorize('admin'), async (req, res) => {
   try {
     const { subject, category, priority, status } = req.body;
+    console.log(req.params.id);
     
+     console.log(status);
     const [result] = await pool.query(
-      'UPDATE tickets SET subject=?, category=?, priority=?, status=? WHERE id=?',
-      [subject, category, priority, status?.toLowerCase(), req.params.id]
+      'UPDATE tickets SET status=? WHERE id=?',
+      [status, req.params.id]
     );
+    console.log(result);
+    
     
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'Ticket not found' });
@@ -326,6 +398,95 @@ app.put('/api/tickets/:id', authenticate, authorize('admin'), async (req, res) =
     res.status(500).json({ error: err.message });
   }
 });
+
+// const cleanValue = (val) => typeof val === 'string' ? val.trim() : val;
+
+// ✅ Allowed ENUM values
+// const allowedStatuses = ['open', 'in progress', 'closed', 'resolved'];
+// const allowedPriorities = ['Low', 'Medium', 'High'];
+
+// app.put('/api/tickets/:id', authenticate, async (req, res) => {
+//   const {
+//     subject,
+//     category,
+//     priority,
+//     status,
+//     description,
+//     created_by,
+//     created_at
+//   } = req.body;
+
+//   const fields = [];
+//   const values = [];
+
+//   if (subject !== undefined) {
+//     fields.push("subject = ?");
+//     values.push(cleanValue(subject));
+//   }
+
+//   if (category !== undefined) {
+//     fields.push("category = ?");
+//     values.push(cleanValue(category));
+//   }
+
+//   if (priority !== undefined) {
+//     const cleaned = cleanValue(priority);
+//     if (!allowedPriorities.includes(cleaned)) {
+//       return res.status(400).json({ error: 'Invalid priority value' });
+//     }
+//     fields.push("priority = ?");
+//     values.push(cleaned);
+//   }
+
+//   if (status !== undefined) {
+//     const cleaned = cleanValue(status);
+//     if (!allowedStatuses.includes(cleaned)) {
+//       return res.status(400).json({ error: 'Invalid status value' });
+//     }
+//     fields.push("status = ?");
+//     values.push(cleaned);
+//   }
+
+//   if (description !== undefined) {
+//     fields.push("description = ?");
+//     values.push(cleanValue(description));
+//   }
+
+//   if (created_by !== undefined) {
+//     fields.push("created_by = ?");
+//     values.push(created_by);
+//   }
+
+//   if (created_at !== undefined) {
+//     fields.push("created_at = ?");
+//     values.push(created_at);
+//   }
+
+//   if (fields.length === 0) {
+//     return res.status(400).json({ error: 'No fields provided for update.' });
+//   }
+
+//   values.push(req.params.id); // for WHERE clause
+
+//   try {
+//     const [result] = await pool.query(
+//       `UPDATE tickets SET ${fields.join(', ')} WHERE id = ?`,
+//       values
+//     );
+
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ error: 'Ticket not found' });
+//     }
+
+//     res.json({ message: 'Ticket updated successfully' });
+//   } catch (error) {
+//     console.error('Update ticket error:', error);
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
+
+
 
 // Delete Ticket (admin)
 app.delete('/api/tickets/:id', authenticate, authorize('admin'), async (req, res) => {

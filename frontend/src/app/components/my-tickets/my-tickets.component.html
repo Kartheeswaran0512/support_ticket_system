@@ -1,1 +1,157 @@
-<p>my-tickets works!</p>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+  <div class="max-w-7xl mx-auto">
+    
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">My Support Tickets</h1>
+      <p class="text-gray-600">Track and manage your support requests</p>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <mat-form-field class="w-full">
+          <mat-label>Search tickets</mat-label>
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput [(ngModel)]="searchTerm" (input)="filterTickets()" placeholder="Search by subject...">
+        </mat-form-field>
+        
+        <mat-form-field class="w-full">
+          <mat-label>Filter by Status</mat-label>
+          <mat-icon matPrefix>filter_list</mat-icon>
+          <mat-select [(ngModel)]="statusFilter" (selectionChange)="filterTickets()">
+            <mat-option value="">All Status</mat-option>
+            <mat-option value="open">Open</mat-option>
+            <mat-option value="in progress">In Progress</mat-option>
+            <mat-option value="closed">Closed</mat-option>
+            <mat-option value="resolved">Resolved</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field class="w-full">
+          <mat-label>Filter by Priority</mat-label>
+          <mat-icon matPrefix>priority_high</mat-icon>
+          <mat-select [(ngModel)]="priorityFilter" (selectionChange)="filterTickets()">
+            <mat-option value="">All Priorities</mat-option>
+            <mat-option value="High">High</mat-option>
+            <mat-option value="Medium">Medium</mat-option>
+            <mat-option value="Low">Low</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredTickets.length === 0 && tickets.length === 0" 
+         class="bg-white rounded-2xl shadow-lg p-12 text-center">
+      <div class="max-w-md mx-auto">
+        <mat-icon class="text-gray-300 text-6xl mb-4">inbox</mat-icon>
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">No tickets yet</h3>
+        <p class="text-gray-600 mb-6">Create your first support ticket to get started</p>
+        <button mat-raised-button color="primary" routerLink="/new-ticket">
+          <mat-icon class="mr-2">add</mat-icon>
+          Create First Ticket
+        </button>
+      </div>
+    </div>
+
+    <!-- No Results -->
+    <div *ngIf="filteredTickets.length === 0 && tickets.length > 0" 
+         class="bg-white rounded-2xl shadow-lg p-12 text-center">
+      <mat-icon class="text-gray-300 text-6xl mb-4">search_off</mat-icon>
+      <h3 class="text-xl font-semibold text-gray-800 mb-2">No matching tickets</h3>
+      <p class="text-gray-600">Try adjusting your search or filter criteria</p>
+    </div>
+
+    <!-- Tickets Grid -->
+    <div *ngIf="filteredTickets.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <mat-card *ngFor="let t of filteredTickets" 
+                class="p-6 hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+                [routerLink]="['/ticket', t.id]"
+                (click)="onTicketClick(t)">
+        
+        <!-- Card Header -->
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-gray-800 mb-1">{{ t.subject || 'No subject' }}</h3>
+            <p class="text-sm text-gray-500">Ticket #{{ t.id }}</p>
+          </div>
+          <mat-icon class="text-gray-400">{{ getStatusIcon(t.status) }}</mat-icon>
+        </div>
+
+        <!-- Status Badge -->
+        <div class="mb-3">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
+            <div class="w-2 h-2 rounded-full mr-2"></div>
+            {{ t.status || 'Open' }}
+          </span>
+        </div>
+
+        <!-- Ticket Details -->
+        <div class="space-y-2 mb-4">
+          <div class="flex items-center gap-2 text-sm text-gray-600">
+            <mat-icon class="text-gray-400 text-base">category</mat-icon>
+            <span>{{ t.category || 'NA' }}</span>
+          </div>
+          
+          <div class="flex items-center gap-2 text-sm text-gray-600">
+            <mat-icon class="text-gray-400 text-base">{{ getPriorityIcon(t.priority) }}</mat-icon>
+            <span>{{t.priority || 'NA'}}</span>
+          </div>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+          <span class="text-xs text-gray-500">Click to view details</span>
+          <div class="flex items-center gap-2">
+            <button *ngIf="isAdmin" mat-icon-button (click)="onEdit(t); $event.stopPropagation()" 
+                    class="text-gray-500 hover:text-blue-500" 
+                    matTooltip="Edit ticket">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <mat-icon class="text-blue-500">arrow_forward</mat-icon>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div *ngIf="selectedTicket" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+    <h2 class="text-xl font-semibold mb-4">Edit Ticket #{{selectedTicket.id}}</h2>
+    
+    <div class="space-y-4">
+      <mat-form-field class="w-full">
+        <mat-label>Subject</mat-label>
+        <input matInput [(ngModel)]="selectedTicket.subject">
+      </mat-form-field>
+      
+      <mat-form-field class="w-full">
+        <mat-label>Status</mat-label>
+        <mat-select [(ngModel)]="selectedTicket.status">
+          <mat-option value="open">Open</mat-option>
+          <mat-option value="in progress">In Progress</mat-option>
+          <mat-option value="closed">Closed</mat-option>
+          <mat-option value="resolved">Resolved</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field class="w-full">
+        <mat-label>Priority</mat-label>
+        <mat-select [(ngModel)]="selectedTicket.priority">
+          <mat-option value="High">High</mat-option>
+          <mat-option value="Medium">Medium</mat-option>
+          <mat-option value="Low">Low</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+    <div class="flex justify-end gap-2 mt-6">
+      <button mat-button (click)="selectedTicket = null">Cancel</button>
+      <button mat-raised-button color="primary" (click)="updateTicket()">Update</button>
+    </div>
+  </div>
+</div>

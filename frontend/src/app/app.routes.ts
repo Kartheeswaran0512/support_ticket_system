@@ -16,7 +16,7 @@ export const routes: Routes = [
   { path: 'my-tickets', component: MyTicketsComponent, canActivate: [AuthGuard] },
   { path: 'new-ticket', component: NewTicketComponent, canActivate: [AuthGuard] },
   { path: 'ticket/:id', component: TicketDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'register', component: RegisterComponent},
+  { path: 'register',   component: RegisterComponent},
   { path: 'adminregister', component: AdminRegisterComponent},
   { path: 'adminlogin', component: AdminLoginComponent},
   { path: 'login', component: LoginComponent}

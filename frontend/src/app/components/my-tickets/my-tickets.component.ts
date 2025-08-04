@@ -11,6 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-my-tickets',
@@ -29,11 +31,12 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   template: `
-    <!-- <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4"> -->
+      <!-- <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4"> -->
       <div class="bg-gray-900  min-h-screen p-4">
       <div class="max-w-7xl mx-auto">
         
         <!-- Header -->
+         
         <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div class="flex items-center gap-3">
@@ -50,6 +53,7 @@ import { FormsModule } from '@angular/forms';
               <mat-icon>add</mat-icon>
               New Ticket
             </button>
+             
           </div>
         </div>
 
@@ -68,9 +72,22 @@ import { FormsModule } from '@angular/forms';
               <mat-icon matPrefix>filter_list</mat-icon>
               <mat-select [(ngModel)]="statusFilter" (selectionChange)="filterTickets()">
                 <mat-option value="">All Status</mat-option>
-                <mat-option value="Open">Open</mat-option>
-                <mat-option value="In Progress">In Progress</mat-option>
-                <mat-option value="Closed">Closed</mat-option>
+                <mat-option value="open">Open</mat-option>
+                <mat-option value="in Progress">In Progress</mat-option>
+                <mat-option value="closed">Closed</mat-option>
+                <mat-option value="resolved">Resolved</mat-option>
+                <mat-option value="on hold">On Hold</mat-option>
+                <mat-option value="cancelled">Cancelled</mat-option>
+                <mat-option value="reopened">Reopened</mat-option>
+                <mat-option value="duplicate">Duplicate</mat-option>
+                <mat-option value="invalid">Invalid</mat-option>
+                <mat-option value="wontfix">Won't Fix</mat-option>
+                <mat-option value="new">New</mat-option>
+                <mat-option value="under review">Under Review</mat-option>
+                <mat-option value="under testing">Under Testing</mat-option>
+                <mat-option value="under review">Under Review</mat-option>
+                <mat-option value="under review">Under Review</mat-option>
+
               </mat-select>
             </mat-form-field>
             
@@ -122,20 +139,21 @@ import { FormsModule } from '@angular/forms';
                 <h3 class="text-lg font-semibold text-gray-800 mb-1">{{ t.subject || 'No subject' }}</h3>
                 <p class="text-sm text-gray-500">Ticket #{{ t.id }}</p>
               </div>
-              <mat-icon class="text-gray-400">{{ getStatusIcon(t.status) }}</mat-icon>
+              <!-- <mat-icon class="text-gray-400">{{ getStatusIcon(t.status) }}</mat-icon> -->
             </div>
 
             <!-- Status Badge -->
-            <div class="mb-3">
+            <div class="mb-3"> 
               <!-- <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
                     [ngClass]="getStatusClass(t.status)"> -->
                 <!-- <div class="w-2 h-2 rounded-full mr-2" [ngClass]="getStatusDotClass(t.status)"></div> -->
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
                 <div class="w-2 h-2 rounded-full mr-2" ></div>
 
-                {{ t.status }}
+                {{ t.status || 'Open' }}
               </span>
-            </div>
+            </div>  
+          
 
             <!-- Ticket Details -->
             <div class="space-y-2 mb-4">
@@ -151,16 +169,62 @@ import { FormsModule } from '@angular/forms';
               </div>
             </div>
 
-            <!-- Card Footer -->
+            <!-- card details -->
             <div class="flex items-center justify-between pt-3 border-t border-gray-100">
               <span class="text-xs text-gray-500">Click to view details</span>
-              <mat-icon class="text-blue-500">arrow_forward</mat-icon>
+              <div class="flex items-center gap-2">
+                <button *ngIf="isAdmin" mat-icon-button (click)="onEdit(t); $event.stopPropagation()" 
+                        class="text-gray-500 hover:text-blue-500" 
+                        matTooltip="Edit ticket">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <mat-icon class="text-blue-500">arrow_forward</mat-icon>
+              </div>
             </div>
           </mat-card>
         </div>
         
       </div>
     </div>
+
+    <!-- Edit Modal -->
+    <div *ngIf="selectedTicket" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+        <h2 class="text-xl font-semibold mb-4">Edit Ticket #{{selectedTicket.id}}</h2>
+        
+        <div class="space-y-4">
+          <mat-form-field class="w-full">
+            <mat-label>Subject</mat-label>
+            <input matInput [(ngModel)]="selectedTicket.subject">
+          </mat-form-field>
+          
+          <mat-form-field class="w-full">
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="selectedTicket.status">
+              <mat-option value="open">Open</mat-option>
+              <mat-option value="in progress">In Progress</mat-option>
+              <mat-option value="closed">Closed</mat-option>
+              <mat-option value="resolved">Resolved</mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field class="w-full">
+            <mat-label>Priority</mat-label>
+            <mat-select [(ngModel)]="selectedTicket.priority">
+              <mat-option value="High">High</mat-option>
+              <mat-option value="Medium">Medium</mat-option>
+              <mat-option value="Low">Low</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+        <div class="flex justify-end gap-2 mt-6">
+          <button mat-button (click)="selectedTicket = null">Cancel</button>
+          <button mat-raised-button color="primary" (click)="updateTicket()">Update</button>
+        </div>
+      </div>
+    </div>
+
   `,
   // styles: [`
   //   .ticket-card { margin-bottom: 12px; }
@@ -172,10 +236,13 @@ export class MyTicketsComponent implements OnInit {
   searchTerm = '';
   statusFilter = '';
   priorityFilter = '';
+  selectedTicket: any = null;
+  isAdmin = false;
 
-  constructor(private ticketService: TicketService) {}
+  constructor(private ticketService: TicketService, private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit() {
+    this.isAdmin = this.authService.getRole() === 'admin';
     this.ticketService.getTickets().subscribe(data => {
       console.log('fetching data',data);
       this.tickets = data;
@@ -194,6 +261,33 @@ export class MyTicketsComponent implements OnInit {
       return matchesSearch && matchesStatus && matchesPriority;
     });
   }
+  
+
+onEdit(ticket: any) {
+  // Clone to avoid 2-way binding side effects
+  this.selectedTicket = { ...ticket };
+}
+loadTickets() {
+  this.ticketService.getTickets().subscribe(data => {
+    this.tickets = data;
+    this.filteredTickets = data;
+  });
+}
+updateTicket() {
+  const ticketId = this.selectedTicket.id;
+  this.http.put(`http://localhost:4000/api/tickets/${ticketId}`, this.selectedTicket)
+    .subscribe({
+      next: () => {
+        alert('Ticket updated successfully');
+        this.selectedTicket = null;
+        this.loadTickets(); // refresh list
+      },
+      error: (err:any) => {
+        console.error(err);
+        alert('Update failed');
+      }
+    });
+}
 // old code
   // getColor(status: string): 'primary' | 'accent' | 'warn' {
   //   return status === 'Open' ? 'warn' :
@@ -284,4 +378,5 @@ export class MyTicketsComponent implements OnInit {
     console.log('Clicking ticket:', ticket);
     console.log('Navigating to:', `/ticket/${ticket.id}`);
   }
+ 
 }
