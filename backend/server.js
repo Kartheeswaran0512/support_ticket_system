@@ -65,7 +65,7 @@ const upload = multer({ storage });
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: 'welcome123',
+  password: 'root',
   database: 'raise_ticket',
   port: 3306,
 });
