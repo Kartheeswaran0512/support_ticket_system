@@ -62,12 +62,20 @@ const upload = multer({ storage });
 //     console.error('❌ DB Connection failed:', err.message);
 //   }
 // }
+// const pool = mysql.createPool({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'root',
+//   database: 'raise_ticket',
+// });
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'raise_ticket',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT // ✅ MySQL port (usually 3306)
 });
+
 
 async function testConnection() {
   try {
