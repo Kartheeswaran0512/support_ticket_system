@@ -67,7 +67,6 @@ const pool = mysql.createPool({
   user: 'root',
   password: 'root',
   database: 'raise_ticket',
-  port: 3306,
 });
 
 async function testConnection() {
@@ -130,6 +129,7 @@ app.post('/api/register', async (req, res) => {
     await pool.query('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, hashed, role || 'customer']);
     res.json({ message: 'User registered' });
   } catch (err) {
+    console.error('Registration Error:', err);
     res.status(500).json({ error: err.message });
   }
 });
